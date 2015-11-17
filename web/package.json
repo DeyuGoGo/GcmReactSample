@@ -1,0 +1,28 @@
+{
+  "name": "gcm-react-sample",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DeyuGoGo/GcmReactSample.git"
+  },
+  "keywords": [
+    "gcm"
+  ],
+  "author": "Deyu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/DeyuGoGo/GcmReactSample/issues"
+  },
+  "homepage": "https://github.com/DeyuGoGo/GcmReactSample#readme",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "node-gcm": "^0.12.1",
+    "sequelize": "^3.13.0"
+  }
+}
