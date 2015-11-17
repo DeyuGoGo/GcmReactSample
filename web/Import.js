@@ -1,5 +1,5 @@
 module.exports = {
-	getConfig : function() {return require('./Config')},
+	getConfig : function() {return require('./DBConfig')},
 	getBaseSQL: function() {return require("./BaseSQL")},
 	getGCM : function() {return require('node-gcm')},
 	getBodyParser  : function() {return require('body-parser');},
