@@ -7,13 +7,24 @@
 var React = require('react-native');
 var {
   AppRegistry,
+  DeviceEventEmitter,
   StyleSheet,
   Text,
   View,
 } = React;
+var DeyuToast = require('./DeyuGcm');
+var Login = require('./login');
 
 var GcmReactSample = React.createClass({
+  getInitialState: function() {
+    return {
+      reg: false,
+    };
+  },
   render: function() {
+    if(!this.state.reg){
+      return <Login/>;
+    }
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -27,6 +38,15 @@ var GcmReactSample = React.createClass({
         </Text>
       </View>
     );
+  },
+  componentDidMount: function() {
+    DeviceEventEmitter.addListener('registration_complete', function(e: Event) {
+      console.log("DeviceEventEmitter" + e.deyu);
+    });
+    DeyuToast.regGcm();
+  },
+  checkRegState:function(){
+
   }
 });
 

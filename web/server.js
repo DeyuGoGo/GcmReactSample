@@ -33,6 +33,16 @@ app.post('/reg', function(req, res) {
 	  PushUser.upsert(dev_id,user_id,push_id);
     res.end('oo');
 });
+app.get('/isUserReg', function(req, res) { 
+    var user_id = req.body.userId;
+    PushUser.getPushIds(user_id).then(
+      (id)=>{
+        res.end{'{}'};
+      },
+      (err)=>{
+        res.end('{}');
+      };);
+});
 
 app.post('/delete', function(req, res) {
   var dev_id = req.body.deviceId;

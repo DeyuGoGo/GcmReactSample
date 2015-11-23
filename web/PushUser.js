@@ -23,6 +23,6 @@ module.exports = {
 				resolve(pushids);
 			});
 		});
-	}
+	},
 }
 
