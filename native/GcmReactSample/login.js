@@ -5,33 +5,31 @@ var {
   AppRegistry,
   DeviceEventEmitter,
   StyleSheet,
+  TextInput,
   TouchableNativeFeedback,
+  NativeModules,
   Text,
   View,
 } = React;
-
-var url = '104.155.238.153:3000/'
+var ToastAndroid = NativeModules.ToastAndroid;
+var url = 'http://104.155.238.153:3000/'
 var Login = React.createClass({
+  getInitialState: function() {
+    return {
+    };
+  },
   checkUserId: function( userid ) {
-    fetch(REQUEST_URL2,{
-      method: 'get',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        userId: userid,
-      })
-    })
+    fetch(url + 'isUserReg?'+'userId='+userid)
       .then((response) => response.json())
       .then((responseData) => {
+        ToastAndroid.show("responseData:"+responseData , ToastAndroid.SHORT);
       })
       .done();
   },
   onRegsuccess: function(){
   },
   _onPressButton: function(){
-    checkUserId(this.state.userid);
+    this.checkUserId(this.state.userid);
   },
   render: function() {
     return (

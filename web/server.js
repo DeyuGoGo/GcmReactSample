@@ -37,10 +37,12 @@ app.get('/isUserReg', function(req, res) {
     var user_id = req.body.userId;
     PushUser.getPushIds(user_id).then(
       (id)=>{
-        res.end('{}');
+        res.json({isReg:true});
+        res.end();
       },
       (err)=>{
-        res.end('{}');
+        res.json({isReg:false});
+        res.end();
       });
 });
 
