@@ -19,6 +19,7 @@ package com.gcmreactsample.gcm;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -30,10 +31,18 @@ import com.google.android.gms.iid.InstanceID;
 
 import java.io.IOException;
 
+import retrofit.Call;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
+import retrofit.http.Field;
+import retrofit.http.POST;
+
 public class RegistrationIntentService extends IntentService {
 
     private static final String TAG = "RegIntentService";
     private static final String[] TOPICS = {"global"};
+    private static final String API_URL = "http://104.155.238.153:3000";
+    public static final String EXTRAS_USERID = "extras.userid";
 
     public RegistrationIntentService() {
         super(TAG);
@@ -57,7 +66,7 @@ public class RegistrationIntentService extends IntentService {
             Log.i(TAG, "GCM Registration Token: " + token);
 
             // TODO: Implement this method to send any registration to your app's servers.
-            sendRegistrationToServer(token);
+            sendRegistrationToServer(token , intent.getStringExtra(EXTRAS_USERID));
 
             // Subscribe to topic channels
             subscribeTopics(token);
@@ -78,8 +87,22 @@ public class RegistrationIntentService extends IntentService {
         LocalBroadcastManager.getInstance(this).sendBroadcast(registrationComplete);
     }
 
-    private void sendRegistrationToServer(String token) {
-        // Add custom implementation, as needed.
+    private void sendRegistrationToServer(String token , String userid) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(API_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Create an instance of our GitHub API interface.
+        DeyuGcmAPI DeyuGcmAPI = retrofit.create(DeyuGcmAPI.class);
+
+        // Create a call instance for looking up Retrofit contributors.
+        Call<Result> call = DeyuGcmAPI.reg(userid,Build.SERIAL,token);
+        try {
+            call.execute();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void subscribeTopics(String token) throws IOException {
@@ -87,6 +110,19 @@ public class RegistrationIntentService extends IntentService {
         for (String topic : TOPICS) {
             pubSub.subscribe(token, "/topics/" + topic, null);
         }
+    }
+
+    public static class Result {
+        public final boolean isSuccess;
+
+        public Result(boolean isSuccess) {
+            this.isSuccess = isSuccess;
+        }
+    }
+
+    public interface DeyuGcmAPI {
+        @POST("/reg")
+        Call<Result> reg(@Field("userId") String userid , @Field("deviceId")String deviceid , @Field("pushId")String pushid);
     }
 
 }

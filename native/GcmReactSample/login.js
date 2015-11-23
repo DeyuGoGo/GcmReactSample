@@ -22,7 +22,10 @@ var Login = React.createClass({
     fetch(url + 'isUserReg?'+'userId='+userid)
       .then((response) => response.json())
       .then((responseData) => {
-        ToastAndroid.show("responseData:"+responseData , ToastAndroid.SHORT);
+        if(responseData.isReg){
+          ToastAndroid.show("這名稱，已經有人囉，換個名稱吧");
+        }
+        ToastAndroid.show("responseData:"+responseData.isReg , ToastAndroid.SHORT);
       })
       .done();
   },

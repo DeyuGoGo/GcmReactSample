@@ -30,8 +30,9 @@ app.post('/reg', function(req, res) {
 	  var dev_id = req.body.deviceId;
 	  var user_id = req.body.userId;
 	  var push_id = req.body.pushId;
-	  PushUser.upsert(dev_id,user_id,push_id);
-    res.end('oo');
+	  PushUser.upseisSuccess:truert(dev_id,user_id,push_id);
+    res.json({isSuccess:true})
+    res.end();
 });
 app.get('/isUserReg', function(req, res) { 
     var user_id = req.body.userId;

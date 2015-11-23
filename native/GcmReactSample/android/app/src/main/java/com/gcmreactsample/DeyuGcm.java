@@ -31,6 +31,7 @@ import javax.annotation.Nullable;
 public class DeyuGcm extends ReactContextBaseJavaModule {
 
     public static final String REACT_CLASS = "DeyuGcm";
+
     private ReactApplicationContext mContext;
 
     private boolean isReg = false;
@@ -56,8 +57,8 @@ public class DeyuGcm extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void regGcm() {
-        tryGcm();
+    public void regGcm(String userId) {
+        tryGcm(userId);
     }
 
     @Override
@@ -66,7 +67,7 @@ public class DeyuGcm extends ReactContextBaseJavaModule {
         if(isReg)LocalBroadcastManager.getInstance(mContext).unregisterReceiver(mRegistrationBroadcastReceiver);
     }
 
-    private void tryGcm(){
+    private void tryGcm(final String userId){
 
         mRegistrationBroadcastReceiver = new BroadcastReceiver() {
             @Override
@@ -91,6 +92,7 @@ public class DeyuGcm extends ReactContextBaseJavaModule {
         if (checkPlayServices()) {
             // Start IntentService to register this application with GCM.
             Intent intent = new Intent(mContext, RegistrationIntentService.class);
+            intent.putExtra(RegistrationIntentService.EXTRAS_USERID,userId);
             mContext.startService(intent);
         }
     }
@@ -109,6 +111,7 @@ public class DeyuGcm extends ReactContextBaseJavaModule {
         }
         return true;
     }
+
 
     private void sendEvent(String eventName,
                            @Nullable WritableMap params) {
