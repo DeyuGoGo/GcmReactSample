@@ -37,11 +37,11 @@ app.get('/isUserReg', function(req, res) {
     var user_id = req.body.userId;
     PushUser.getPushIds(user_id).then(
       (id)=>{
-        res.end{'{}'};
+        res.end('{}');
       },
       (err)=>{
         res.end('{}');
-      };);
+      });
 });
 
 app.post('/delete', function(req, res) {
