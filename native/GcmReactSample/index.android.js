@@ -43,7 +43,7 @@ var GcmReactSample = React.createClass({
     DeviceEventEmitter.addListener('registration_complete', function(e: Event) {
       console.log("DeviceEventEmitter" + e.deyu);
     });
-    DeyuToast.regGcm();
+    // DeyuToast.regGcm();
   },
   checkRegState:function(){
 
