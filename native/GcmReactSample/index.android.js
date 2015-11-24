@@ -24,21 +24,21 @@ var GcmReactSample = React.createClass({
   getInitialState: function() {
     return {
       reg: false,
-      loaded: false;
+      loaded: false
     };
   },
   render: function() {
-    if(!loaded){
+    if(!this.state.loaded){
       return (
         <View style={styles.container}>
         <Text style={styles.welcome}>
-        Loading!!
+        {this.state.userId}Loading!!
         </Text>
         </View>
         );
     }
     if(!this.state.reg){
-      return <Login onRegOk:this./>;
+      return <Login OnRegOk={this._onRegOk}/>;
     }
     return (
       <View style={styles.container}>
@@ -90,6 +90,7 @@ var GcmReactSample = React.createClass({
       .done();
   },
   _onRegOk: function(){
+    console.log("_onRegOk");
     this.checkRegState();
   },
   componentDidMount: function() {
@@ -101,7 +102,7 @@ var GcmReactSample = React.createClass({
       .then((responseData) => {
         console.log("isDeviceReg responseData " + responseData);
         if(responseData.isReg){
-          this.setState({userId:responseData.userId.userId});
+          this.setState({userId:responseData.userId});
         }
         this.setState({loaded:true, reg:responseData.isReg});
       })

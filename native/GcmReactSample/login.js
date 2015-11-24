@@ -14,14 +14,21 @@ var {
 var ToastAndroid = NativeModules.ToastAndroid;
 var url = 'http://104.155.238.153:3000/'
 var DeyuGcm = require('./DeyuGcm');
+var onRegsuccess;
 var Login = React.createClass({
   getInitialState: function() {
     return {
     };
   },
+  onRegsuccess: function(){
+    this.props.OnRegOk();
+  },
   componentDidMount: function() {
+    onRegsuccess = this.onRegsuccess;
+    console.log("DeviceEventEmitter.addListener");
     DeviceEventEmitter.addListener('registration_complete', function(e: Event) {
-      this.onRegsuccess();
+      console.log("registration_complete");
+      onRegsuccess();
     });
   },
   resgisterGCM: function(userid){
@@ -32,15 +39,12 @@ var Login = React.createClass({
       .then((response) => response.json())
       .then((responseData) => {
         if(responseData.isReg){
-          ToastAndroid.show("這名稱，已經有人囉，換個名稱吧");
+          ToastAndroid.show("這名稱，已經有人囉，換個名稱吧",ToastAndroid.SHORT);
           return;
         }
         this.resgisterGCM(userid);
       })
       .done();
-  },
-  onRegsuccess: function(){
-    this.props.OnRegOk();
   },
   _onPressButton: function(){
     this.checkUserId(this.state.userid);

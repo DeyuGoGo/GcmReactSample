@@ -31,7 +31,7 @@ module.exports = {
 					reject("Not Reg");
 					return;
 				}
-				resolve(entry.deviceId);
+				resolve(entry.userId);
 			});
 		});
 	},
