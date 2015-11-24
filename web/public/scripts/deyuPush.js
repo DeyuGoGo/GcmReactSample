@@ -1,19 +1,4 @@
-
 var CommentBox = React.createClass({
-  
-  // loadCommentsFromServer: function() {
-  //   $.ajax({
-  //     url: this.props.url,
-  //     dataType: 'json',
-  //     cache: false,
-  //     success: function(data) {
-  //       this.setState({data: data});
-  //     }.bind(this),
-  //     error: function(xhr, status, err) {
-  //       console.error(this.props.url, status, err.toString());
-  //     }.bind(this)
-  //   });
-  // },
   handleCommentSubmit: function(comment) {
     $.ajax({
       url: this.props.url + 'push',
@@ -29,8 +14,10 @@ var CommentBox = React.createClass({
     });
   },
   getInitialState: function() {
+    return {};
   },
   componentDidMount: function() {
+    console.log("componentDidMount");
   },
   render: function() {
     return (
@@ -42,13 +29,14 @@ var CommentBox = React.createClass({
 });
 var CommentForm = React.createClass({
   handleSubmit: function(e) {
+    console.log("handleSubmit");
     e.preventDefault();
     var to = this.refs.to.value.trim();
     var text = this.refs.message.value.trim();
     if (!to || !text) {
       return;
     }
-    this.props.onCommentSubmit({userId: to, message: message});
+    this.props.onCommentSubmit({userId: to, message: text});
     this.refs.to.value = '';
     this.refs.message.value = '';
     return;
@@ -66,6 +54,6 @@ var CommentForm = React.createClass({
   }
 });
 ReactDOM.render(
-  <CommentBox url="http://104.155.238.153:3000/"/>,
+  <CommentBox url="http://localhost:3000/"/>,
   document.getElementById('content')
 );

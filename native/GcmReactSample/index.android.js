@@ -7,14 +7,15 @@
 var React = require('react-native');
 var {
   AppRegistry,
-  DeviceEventEmitter,
   StyleSheet,
   Text,
   TextInput,
   TouchableNativeFeedback,
+  NativeModules,
   View,
 } = React;
 var DeyuToast = require('./DeyuGcm');
+var ToastAndroid = NativeModules.ToastAndroid;
 var Login = require('./login');
 var DeviceInfo = require('react-native-device-info');
 var url = 'http://104.155.238.153:3000/'
@@ -23,11 +24,21 @@ var GcmReactSample = React.createClass({
   getInitialState: function() {
     return {
       reg: false,
+      loaded: false;
     };
   },
   render: function() {
+    if(!loaded){
+      return (
+        <View style={styles.container}>
+        <Text style={styles.welcome}>
+        Loading!!
+        </Text>
+        </View>
+        );
+    }
     if(!this.state.reg){
-      return <Login/>;
+      return <Login onRegOk:this./>;
     }
     return (
       <View style={styles.container}>
@@ -70,18 +81,18 @@ var GcmReactSample = React.createClass({
       })
     }).then((response) => response.json())
       .then((responseData) => {
-        console.log(responseData);
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(responseData),
-          loaded: true,
-        });
+        if(responseData.isSuccess){
+          ToastAndroid.show("發送成功",ToastAndroid.SHORT);
+          return;
+        }
+        ToastAndroid.show("發送失敗",ToastAndroid.SHORT);
       })
       .done();
   },
+  _onRegOk: function(){
+    this.checkRegState();
+  },
   componentDidMount: function() {
-    DeviceEventEmitter.addListener('registration_complete', function(e: Event) {
-      console.log("DeviceEventEmitter" + e.deyu);
-    });
     this.checkRegState();
   },
   checkRegState:function(){
@@ -92,7 +103,7 @@ var GcmReactSample = React.createClass({
         if(responseData.isReg){
           this.setState({userId:responseData.userId.userId});
         }
-        this.setState({reg:responseData.isReg});
+        this.setState({loaded:true, reg:responseData.isReg});
       })
       .done();
   }

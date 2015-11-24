@@ -19,6 +19,11 @@ var Login = React.createClass({
     return {
     };
   },
+  componentDidMount: function() {
+    DeviceEventEmitter.addListener('registration_complete', function(e: Event) {
+      this.onRegsuccess();
+    });
+  },
   resgisterGCM: function(userid){
     DeyuGcm.regGcm(userid)
   },
@@ -35,6 +40,7 @@ var Login = React.createClass({
       .done();
   },
   onRegsuccess: function(){
+    this.props.OnRegOk();
   },
   _onPressButton: function(){
     this.checkUserId(this.state.userid);
@@ -54,7 +60,7 @@ var Login = React.createClass({
         onPress={this._onPressButton}
         background={TouchableNativeFeedback.SelectableBackground()}>
         <View style={{width: 150, height: 100, backgroundColor: 'red'}}>
-        <Text style={{margin: 30}}>Button</Text>
+        <Text style={{margin: 30}}>註冊</Text>
       </View>
       </TouchableNativeFeedback>
       </View>
