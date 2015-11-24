@@ -14,9 +14,10 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 })); 
 
 app.post('/push', function(req, res) {
-  console.log("push userid : " + req.body.userId);
+        console.log("body userid : " + req.body.userId + "body message : " + req.body.message);
     var user_id = req.body.userId,
-    var message = req.body.message;
+    message = req.body.message;
+          console.log("userid : " + user_id + "message : " + message);
     PushUser.getPushIds(user_id).then(
       function(ids) {
       Push.push(ids,message);
