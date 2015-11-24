@@ -23,6 +23,7 @@
     "body-parser": "^1.14.1",
     "express": "^4.13.3",
     "node-gcm": "^0.12.1",
+    "path": "^0.12.7",
     "sequelize": "^3.13.0"
   }
 }
