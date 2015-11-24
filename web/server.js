@@ -38,7 +38,7 @@ app.post('/reg', function(req, res) {
 });
 app.get('/isUserReg', function(req, res) { 
     var user_id = req.query.userId;
-    console.log("userId : " + userId );
+    console.log("userId : " + user_id );
     PushUser.getPushIds(user_id).then(
       (id)=>{
         res.json({isReg:true});
