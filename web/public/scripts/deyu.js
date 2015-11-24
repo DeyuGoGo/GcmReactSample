@@ -44,8 +44,8 @@ var CommentForm = React.createClass({
   handleSubmit: function(e) {
     e.preventDefault();
     var to = this.refs.to.value.trim();
-    var message = this.refs.message.value.trim();
-    if (!to || !message) {
+    var text = this.refs.message.value.trim();
+    if (!to || !text) {
       return;
     }
     this.props.onCommentSubmit({userId: to, message: message});
