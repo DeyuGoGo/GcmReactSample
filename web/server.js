@@ -37,7 +37,8 @@ app.post('/reg', function(req, res) {
     res.end();
 });
 app.get('/isUserReg', function(req, res) { 
-    var user_id = req.body.userId;
+    var user_id = req.query.userId;
+    console.log("userId : " + userId );
     PushUser.getPushIds(user_id).then(
       (id)=>{
         res.json({isReg:true});
@@ -49,7 +50,8 @@ app.get('/isUserReg', function(req, res) {
       });
 });
 app.get('/isDeviceReg' ,(req , res) =>{
-  var deviceId = req.body.deviceId;
+  var deviceId = req.query.deviceId;
+  console.log("deviceId : " + deviceId );
   PushUser.getUserId(deviceId).then(
     (userid)=>{
       res.json({isReg:true,userId:userid});

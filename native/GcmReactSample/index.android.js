@@ -53,11 +53,12 @@ var GcmReactSample = React.createClass({
     fetch(url + 'isDeviceReg?'+'deviceId=' + DeviceInfo.getUniqueID())
       .then((response) => response.json())
       .then((responseData) => {
+        console.log("isDeviceReg responseData " + responseData);
         if(responseData.isReg){
-          setState({userId:responseData.userId});
+          this.setState({userId:responseData.userId});
           return;
         }
-        setState({reg:responseData.isReg});
+        this.setState({reg:responseData.isReg});
       })
       .done();
   }
