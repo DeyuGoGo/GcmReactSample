@@ -14,6 +14,20 @@ var CommentBox = React.createClass({
   //     }.bind(this)
   //   });
   // },
+  handleCommentSubmit: function(comment) {
+    $.ajax({
+      url: this.props.url + 'push',
+      dataType: 'json',
+      type: 'POST',
+      data: comment,
+      success: function(data) {
+        console.log('success');
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error(this.props.url, status, err.toString());
+      }.bind(this)
+    });
+  },
   getInitialState: function() {
     return {data: []};
   },
@@ -23,12 +37,37 @@ var CommentBox = React.createClass({
   render: function() {
     return (
       <div className="commentBox">
-         <Text>Hi </Text>
+        <CommentForm onCommentSubmit={this.handleCommentSubmit} />
+      </div>
+    );
+  }
+});
+var CommentForm = React.createClass({
+  handleSubmit: function(e) {
+    e.preventDefault();
+    var to = this.refs.to.value.trim();
+    var message = this.refs.message.value.trim();
+    if (!text || !author) {
+      return;
+    }
+    this.props.onCommentSubmit({userId: author, message: text});
+    this.refs.to.value = '';
+    this.refs.message.value = '';
+    return;
+  },
+  render: function() {
+    return (
+      <div className="commentForm">
+      <form className="commentForm" onSubmit={this.handleSubmit}>
+        <input type="text" placeholder="To" ref="to" />
+        <input type="text" placeholder="Say something..." ref="message" />
+        <input type="submit" value="Post" />
+      </form>
       </div>
     );
   }
 });
 ReactDOM.render(
-  <CommentBox />,
+  <CommentBox url="http://104.155.238.153:3000/"/>,
   document.getElementById('content')
 );
