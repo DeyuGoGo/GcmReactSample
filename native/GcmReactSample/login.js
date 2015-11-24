@@ -30,7 +30,7 @@ var Login = React.createClass({
           ToastAndroid.show("這名稱，已經有人囉，換個名稱吧");
           return;
         }
-        resgisterGCM(userid);
+        this.resgisterGCM(userid);
       })
       .done();
   },

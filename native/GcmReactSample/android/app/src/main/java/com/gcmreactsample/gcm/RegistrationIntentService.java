@@ -34,7 +34,7 @@ import java.io.IOException;
 import retrofit.Call;
 import retrofit.GsonConverterFactory;
 import retrofit.Retrofit;
-import retrofit.http.Field;
+import retrofit.http.Body;
 import retrofit.http.POST;
 
 public class RegistrationIntentService extends IntentService {
@@ -63,7 +63,7 @@ public class RegistrationIntentService extends IntentService {
             String token = instanceID.getToken(getString(R.string.gcm_defaultSenderId),
                     GoogleCloudMessaging.INSTANCE_ID_SCOPE, null);
             // [END get_token]
-            Log.i(TAG, "GCM Registration Token: " + token);
+            Log.d(TAG, "GCM Registration Token: " + token);
 
             // TODO: Implement this method to send any registration to your app's servers.
             sendRegistrationToServer(token , intent.getStringExtra(EXTRAS_USERID));
@@ -95,13 +95,12 @@ public class RegistrationIntentService extends IntentService {
 
         // Create an instance of our GitHub API interface.
         DeyuGcmAPI DeyuGcmAPI = retrofit.create(DeyuGcmAPI.class);
-
         // Create a call instance for looking up Retrofit contributors.
-        Call<Result> call = DeyuGcmAPI.reg(userid,Build.SERIAL,token);
+        Call<Result> call = DeyuGcmAPI.reg(new RegBody(userid,Build.SERIAL,token));
         try {
             call.execute();
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(TAG,"IOException : " + e);
         }
     }
 
@@ -119,10 +118,20 @@ public class RegistrationIntentService extends IntentService {
             this.isSuccess = isSuccess;
         }
     }
+    public class RegBody{
+        final String userId;
+        final String deviceId;
+        final String pushId;
+        public RegBody(String userid , String deviceid , String pushid){
+            this.userId = userid;
+            this.deviceId = deviceid;
+            this.pushId = pushid;
+        }
+    }
 
     public interface DeyuGcmAPI {
         @POST("/reg")
-        Call<Result> reg(@Field("userId") String userid , @Field("deviceId")String deviceid , @Field("pushId")String pushid);
+        Call<Result> reg(@Body RegBody body);
     }
 
 }
