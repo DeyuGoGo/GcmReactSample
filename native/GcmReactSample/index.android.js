@@ -10,6 +10,8 @@ var {
   DeviceEventEmitter,
   StyleSheet,
   Text,
+  TextInput,
+  TouchableNativeFeedback,
   View,
 } = React;
 var DeyuToast = require('./DeyuGcm');
@@ -30,24 +32,57 @@ var GcmReactSample = React.createClass({
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
-          Welcome to React Native!
+           {this.state.userId} Welcome !
         </Text>
-        <Text style={styles.instructions}>
-          To get started, edit index.android.js
-        </Text>
-        <Text style={styles.instructions}>
-          Shake or press menu button for dev menu + this.state.userId;
-        </Text>
+        <TextInput
+         placeholder="傳給"
+         style={styles.inputText}
+         onChangeText={(text) => this.setState({to:text})}
+         value={this.state.to}/>
+         <TextInput
+         placeholder="訊息"
+         style={styles.inputText}
+         onChangeText={(text) => this.setState({message:text})}
+         value={this.state.message}/>
+         <TouchableNativeFeedback
+        onPress={this._onPressButton}
+        background={TouchableNativeFeedback.SelectableBackground()}>
+        <View style={{width: 150, height: 100, backgroundColor: 'red'}}>
+        <Text style={{margin: 30}}>傳送</Text>
+      </View>
+      </TouchableNativeFeedback>
       </View>
     );
   },
-  // isDeviceReg
+  _onPressButton: function(){
+    this.pushMessage(this.state.to,this.state.message);
+  },
+  pushMessage: function( to , message) {
+    fetch(url+'push',{
+      method: 'post',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        userId: to,
+        message: message,
+      })
+    }).then((response) => response.json())
+      .then((responseData) => {
+        console.log(responseData);
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(responseData),
+          loaded: true,
+        });
+      })
+      .done();
+  },
   componentDidMount: function() {
     DeviceEventEmitter.addListener('registration_complete', function(e: Event) {
       console.log("DeviceEventEmitter" + e.deyu);
     });
     this.checkRegState();
-    // DeyuToast.regGcm();
   },
   checkRegState:function(){
     fetch(url + 'isDeviceReg?'+'deviceId=' + DeviceInfo.getUniqueID())
@@ -55,8 +90,7 @@ var GcmReactSample = React.createClass({
       .then((responseData) => {
         console.log("isDeviceReg responseData " + responseData);
         if(responseData.isReg){
-          this.setState({userId:responseData.userId});
-          return;
+          this.setState({userId:responseData.userId.userId});
         }
         this.setState({reg:responseData.isReg});
       })
@@ -80,6 +114,14 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  inputText: {
+    height: 26,
+    borderWidth: 0.5,
+    borderColor: '#0f0f0f',
+    padding: 4,
+    flex: 1,
+    fontSize: 13,
   },
 });
 

@@ -21,9 +21,11 @@ app.post('/push', function(req, res) {
     PushUser.getPushIds(user_id).then(
       function(ids) {
       Push.push(ids,message);
-      res.end('Push Go');
+      res.json({isSuccess:true})
+      res.end();
     },function(err){
-      res.end(err);
+      res.json({isSuccess:false})
+      res.end();
     }
     );
 });

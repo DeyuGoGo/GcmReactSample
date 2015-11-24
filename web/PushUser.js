@@ -26,12 +26,12 @@ module.exports = {
 	},
 	getUserId : function(deviceid){
 		return new Promise(function(resolve, reject) {
-			User.findOne({ where: { deviceId: deviceid} }).then(function(userid) {
-				if(userid==null || userid.length <=0){
+			User.findOne({ where: { deviceId: deviceid} }).then(function(entry) {
+				if(entry==null){
 					reject("Not Reg");
 					return;
 				}
-				resolve(userid);
+				resolve(entry.deviceId);
 			});
 		});
 	},
