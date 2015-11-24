@@ -19,8 +19,8 @@ package com.gcmreactsample.gcm;
 import android.app.IntentService;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -96,7 +96,7 @@ public class RegistrationIntentService extends IntentService {
         // Create an instance of our GitHub API interface.
         DeyuGcmAPI DeyuGcmAPI = retrofit.create(DeyuGcmAPI.class);
         // Create a call instance for looking up Retrofit contributors.
-        Call<Result> call = DeyuGcmAPI.reg(new RegBody(userid,Build.SERIAL,token));
+        Call<Result> call = DeyuGcmAPI.reg(new RegBody(userid, Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID),token));
         try {
             call.execute();
         } catch (IOException e) {

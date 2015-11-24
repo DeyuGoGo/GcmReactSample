@@ -24,5 +24,16 @@ module.exports = {
 			});
 		});
 	},
+	getUserId : function(deviceid){
+		return new Promise(function(resolve, reject) {
+			User.findOne({ where: { deviceId: deviceid} }).then(function(userid) {
+				if(userid==null || userid.length <=0){
+					reject("Not Reg");
+					return;
+				}
+				resolve(userid);
+			});
+		});
+	},
 }
 

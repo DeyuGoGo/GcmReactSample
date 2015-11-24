@@ -14,6 +14,8 @@ var {
 } = React;
 var DeyuToast = require('./DeyuGcm');
 var Login = require('./login');
+var DeviceInfo = require('react-native-device-info');
+var url = 'http://104.155.238.153:3000/'
 
 var GcmReactSample = React.createClass({
   getInitialState: function() {
@@ -34,19 +36,30 @@ var GcmReactSample = React.createClass({
           To get started, edit index.android.js
         </Text>
         <Text style={styles.instructions}>
-          Shake or press menu button for dev menu
+          Shake or press menu button for dev menu + this.state.userId;
         </Text>
       </View>
     );
   },
+  // isDeviceReg
   componentDidMount: function() {
     DeviceEventEmitter.addListener('registration_complete', function(e: Event) {
       console.log("DeviceEventEmitter" + e.deyu);
     });
+    this.checkRegState();
     // DeyuToast.regGcm();
   },
   checkRegState:function(){
-
+    fetch(url + 'isDeviceReg?'+'deviceId=' + DeviceInfo.getUniqueID())
+      .then((response) => response.json())
+      .then((responseData) => {
+        if(responseData.isReg){
+          setState({userId:responseData.userId});
+          return;
+        }
+        setState({reg:responseData.isReg});
+      })
+      .done();
   }
 });
 

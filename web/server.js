@@ -48,6 +48,18 @@ app.get('/isUserReg', function(req, res) {
         res.end();
       });
 });
+app.get('/isDeviceReg' ,(req , res) =>{
+  var deviceId = req.body.deviceId;
+  PushUser.getUserId(deviceId).then(
+    (userid)=>{
+      res.json({isReg:true,userId:userid});
+      res.end();
+    },
+    (err)=>{
+      res.json({isReg:false});
+      res.end();
+    })
+});
 
 app.post('/delete', function(req, res) {
   var dev_id = req.body.deviceId;
