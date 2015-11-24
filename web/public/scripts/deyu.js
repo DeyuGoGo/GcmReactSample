@@ -29,10 +29,8 @@ var CommentBox = React.createClass({
     });
   },
   getInitialState: function() {
-    return {data: []};
   },
   componentDidMount: function() {
-    this.loadCommentsFromServer();
   },
   render: function() {
     return (
@@ -50,7 +48,7 @@ var CommentForm = React.createClass({
     if (!to || !message) {
       return;
     }
-    this.props.onCommentSubmit({userId: author, message: text});
+    this.props.onCommentSubmit({userId: to, message: message});
     this.refs.to.value = '';
     this.refs.message.value = '';
     return;
