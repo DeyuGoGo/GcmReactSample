@@ -54,6 +54,6 @@ var CommentForm = React.createClass({
   }
 });
 ReactDOM.render(
-  <CommentBox url="http://104.155.238.153:3000"/>,
+  <CommentBox url="http://localhost:3000/"/>,
   document.getElementById('content')
 );

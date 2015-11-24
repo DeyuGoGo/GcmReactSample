@@ -24,10 +24,8 @@ app.post('/push', function(req, res) {
       function(ids) {
       Push.push(ids,message);
       res.json({isSuccess:true})
-      res.end();
     },function(err){
       res.json({isSuccess:false})
-      res.end();
     }
     );
 });
@@ -46,11 +44,9 @@ app.get('/isUserReg', function(req, res) {
     PushUser.getPushIds(user_id).then(
       (id)=>{
         res.json({isReg:true});
-        res.end();
       },
       (err)=>{
         res.json({isReg:false});
-        res.end();
       });
 });
 app.get('/isDeviceReg' ,(req , res) =>{
@@ -59,11 +55,9 @@ app.get('/isDeviceReg' ,(req , res) =>{
   PushUser.getUserId(deviceId).then(
     (userid)=>{
       res.json({isReg:true,userId:userid});
-      res.end();
     },
     (err)=>{
       res.json({isReg:false});
-      res.end();
     })
 });
 
